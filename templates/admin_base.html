@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Admin Paneli{% endblock %} | {{ SITE_NAME }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+
+  <header class="admin-topbar">
+    <div class="brand">
+      <span class="brand-mark">TD</span>
+      <span class="brand-text">ADMIN <strong>PANELİ</strong></span>
+    </div>
+    <div>
+      <span class="admin-user">{{ session.get('admin_username', '') }}</span>
+      <a href="{{ url_for('admin_logout') }}" class="btn btn-outline btn-sm">Çıkış Yap</a>
+    </div>
+  </header>
+
+  <nav class="admin-subnav">
+    <div class="admin-content admin-subnav-inner">
+      <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' else '' }}">Dashboard</a>
+      <a href="{{ url_for('admin_products') }}" class="{{ 'active' if request.endpoint and request.endpoint.startswith('admin_products') or request.endpoint in ['create_product','edit_product'] else '' }}">Ürün &amp; Stok Yönetimi</a>
+    </div>
+  </nav>
+
+  <div class="admin-content">
+
+    {% with flashed = get_flashed_messages(with_categories=True) %}
+      {% if flashed %}
+        {% for category, msg in flashed %}
+          <div class="flash flash-{{ 'success' if category == 'success' else 'error' }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block admin_content %}{% endblock %}
+
+  </div>
+</div>
+{% block scripts %}{% endblock %}
+</body>
+</html>

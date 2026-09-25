@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Hizmetlerimiz | {{ SITE_NAME }}{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Hizmetlerimiz</span>
+    <h1>Tır ve Kamyonunuz İçin Sunduğumuz Hizmetler</h1>
+    <p>İhtiyacınıza uygun, profesyonel ve dayanıklı çözümler sunuyoruz.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="service-list">
+
+      <div class="service-row">
+        <div class="service-icon-lg">🚚</div>
+        <div>
+          <h3>Tır & Kamyon Aksesuarları</h3>
+          <p>Ticari araçlar için dayanıklı ve fonksiyonel aksesuarlar sunuyoruz. İhtiyacınıza uygun ürün seçimi ve profesyonel montaj hizmeti sağlıyoruz.</p>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon-lg">💡</div>
+        <div>
+          <h3>LED & Aydınlatma Sistemleri</h3>
+          <p>Aracınızın iç ve dış aydınlatmasını modern LED sistemleriyle yeniliyoruz. Hem görünüm hem de görüş açısından fark yaratıyoruz.</p>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon-lg">🔊</div>
+        <div>
+          <h3>Ses Sistemleri</h3>
+          <p>Uzun yolculuklarınızda konforu artıran, yüksek kaliteli ses sistemi kurulumları gerçekleştiriyoruz.</p>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon-lg">✨</div>
+        <div>
+          <h3>Krom Aksesuarlar</h3>
+          <p>Aracınıza şıklık ve prestij katan krom detaylar ve kaplama uygulamaları sunuyoruz.</p>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon-lg">🛋️</div>
+        <div>
+          <h3>İç Dizayn</h3>
+          <p>Kabin içi konforu artıran döşeme, aydınlatma ve dekorasyon uygulamaları ile iç mekanınızı yeniliyoruz.</p>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon-lg">🎨</div>
+        <div>
+          <h3>Dış Dizayn</h3>
+          <p>Aracınızın dış görünümünü güçlendiren kaplama, boya koruma ve özel tasarım uygulamaları sunuyoruz.</p>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon-lg">⚡</div>
+        <div>
+          <h3>Elektrik & Elektronik</h3>
+          <p>Araç elektrik ve elektronik sistemlerinin kurulumu, bakımı ve arıza tespiti konusunda uzman desteği sağlıyoruz.</p>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon-lg">🛠️</div>
+        <div>
+          <h3>Özel Tasarım</h3>
+          <p>Standart çözümlerin ötesinde, size özel sıfırdan tasarlanan kişiselleştirme projeleri geliştiriyoruz.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section cta-section">
+  <div class="container center">
+    <h2>Projenizi Konuşalım</h2>
+    <a href="https://wa.me/{{ WHATSAPP_NUMBER }}" target="_blank" rel="noopener" class="btn btn-accent btn-lg">WhatsApp'tan Yazın</a>
+  </div>
+</section>
+
+{% endblock %}

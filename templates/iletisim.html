@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}İletişim | {{ SITE_NAME }}{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">İletişim</span>
+    <h1>Bize Ulaşın</h1>
+    <p>Sorularınız ve projeleriniz için buradayız.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container two-col contact-grid">
+    <div class="contact-info">
+      <h3>İletişim Bilgileri</h3>
+      <p><strong>Telefon:</strong> +{{ WHATSAPP_NUMBER }}</p>
+      <p><strong>WhatsApp:</strong> <a href="https://wa.me/{{ WHATSAPP_NUMBER }}" target="_blank" rel="noopener">+{{ WHATSAPP_NUMBER }}</a></p>
+      <p><strong>Adres:</strong> Ercan Havalimanı Kavşağı, Kerimoğulları Tır Garajı Yanı, Cihangir, KKTC</p>
+      <p><strong>Çalışma Saatleri:</strong> Pazartesi - Cumartesi, 09:00 - 19:00</p>
+      <p><strong>Instagram:</strong> <a href="#" target="_blank" rel="noopener">@truckdesignpozanti</a></p>
+      <p><strong>Facebook:</strong> <a href="#" target="_blank" rel="noopener">Truck Design Pozantı</a></p>
+
+      <div class="map-frame">
+        <!-- Konum metne göre aranıyor. Daha isabetli olması için Google Maps'te
+             işletmenizi bulup "Paylaş > Haritayı yerleştir" ile aldığınız embed
+             linkiyle bu satırı değiştirebilirsiniz. -->
+        <iframe src="https://www.google.com/maps?q=Kerimo%C4%9Fullar%C4%B1%20T%C4%B1r%20Garaj%C4%B1%2C%20Cihangir%2C%20Ercan%2C%20KKTC&output=embed" width="100%" height="280" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+
+    <div class="contact-form-wrap">
+      <h3>Mesaj Gönderin</h3>
+      <form method="POST" action="{{ url_for('iletisim') }}" class="contact-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label>Ad Soyad</label>
+        <input type="text" name="name" required maxlength="150">
+
+        <label>Telefon</label>
+        <input type="tel" name="phone" maxlength="50">
+
+        <label>E-posta</label>
+        <input type="email" name="email" required maxlength="150">
+
+        <label>Mesaj</label>
+        <textarea name="message" rows="5" required maxlength="5000"></textarea>
+
+        <button type="submit" class="btn btn-accent">Gönder</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

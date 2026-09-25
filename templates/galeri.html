@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}İşlerimiz | {{ SITE_NAME }}{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Portfolyo</span>
+    <h1>İşlerimiz</h1>
+    <p>Tamamladığımız projelerden bir seçki.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% if posts|length > 0 %}
+    <div class="gallery-grid">
+      {% for post in posts %}
+      <div class="gallery-item" data-index="{{ loop.index0 }}">
+        {% if post.image %}
+          <img src="{{ url_for('static', filename='uploads/' ~ post.image) }}" alt="{{ post.title }}" loading="lazy">
+        {% else %}
+          <div class="post-card-placeholder"></div>
+        {% endif %}
+        <div class="gallery-overlay">
+          <h3>{{ post.title }}</h3>
+          <span>{{ post.created_at[:10] }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-state center">Henüz galeri içeriği eklenmedi.</p>
+    {% endif %}
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Kapat">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+  <div class="lightbox-caption">
+    <h3 id="lightboxTitle"></h3>
+    <p id="lightboxDesc"></p>
+    <span id="lightboxDate"></span>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const GALLERY_ITEMS = [
+    {% for post in posts %}
+    {
+      image: {{ (url_for('static', filename='uploads/' ~ post.image) if post.image else '') | tojson }},
+      title: {{ post.title | tojson }},
+      desc: {{ post.content | tojson }},
+      date: {{ post.created_at[:10] | tojson }}
+    }{{ "," if not loop.last }}
+    {% endfor %}
+  ];
+</script>
+{% endblock %}

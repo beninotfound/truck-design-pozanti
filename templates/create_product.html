@@ -1,0 +1,31 @@
+{% extends "admin_base.html" %}
+{% block title %}Yeni Ürün{% endblock %}
+{% block admin_content %}
+<h2>Yeni Ürün Ekle</h2>
+<form method="POST" enctype="multipart/form-data" class="admin-form form-card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <label>Stok Kodu</label>
+  <input type="text" name="stok_kodu" required maxlength="50" placeholder="Örn: LED-001" value="{{ form.stok_kodu if form else '' }}">
+
+  <label>Ürün Adı</label>
+  <input type="text" name="ad" required maxlength="200" value="{{ form.ad if form else '' }}">
+
+  <label>Adet (Stok Miktarı)</label>
+  <input type="number" name="adet" min="0" step="1" required value="{{ form.adet if form else 0 }}">
+
+  <label>Geliş Fiyatı (₺)</label>
+  <input type="number" name="gelis_fiyati" min="0" step="0.01" required value="{{ form.gelis_fiyati if form else '' }}">
+
+  <label>Satış Fiyatı - KDV Hariç (₺)</label>
+  <input type="number" name="satis_fiyati" min="0" step="0.01" required value="{{ form.satis_fiyati if form else '' }}">
+
+  <label>KDV Oranı (%)</label>
+  <input type="number" name="kdv_orani" min="0" step="0.01" value="{{ form.kdv_orani if form else 20 }}">
+
+  <label>Ürün Fotoğrafı (JPG, JPEG, PNG, WEBP - maks. 5MB, opsiyonel)</label>
+  <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
+
+  <button type="submit" class="btn btn-accent">Kaydet</button>
+</form>
+{% endblock %}

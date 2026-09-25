@@ -1,0 +1,21 @@
+{% extends "admin_base.html" %}
+{% block title %}Gönderiyi Düzenle{% endblock %}
+{% block admin_content %}
+<h2>Gönderiyi Düzenle</h2>
+{% if post.image %}
+  <img src="{{ url_for('static', filename='uploads/' ~ post.image) }}" class="edit-preview">
+{% endif %}
+<form method="POST" enctype="multipart/form-data" class="admin-form form-card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Başlık</label>
+  <input type="text" name="title" required maxlength="200" value="{{ post.title }}">
+
+  <label>Açıklama</label>
+  <textarea name="content" rows="5" required maxlength="3000">{{ post.content }}</textarea>
+
+  <label>Yeni Fotoğraf (opsiyonel - boş bırakılırsa mevcut görsel korunur)</label>
+  <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
+
+  <button type="submit" class="btn btn-accent">Güncelle</button>
+</form>
+{% endblock %}

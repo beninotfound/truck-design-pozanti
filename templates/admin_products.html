@@ -1,0 +1,78 @@
+{% extends "admin_base.html" %}
+{% block title %}Ürün & Stok Yönetimi{% endblock %}
+{% block admin_content %}
+
+<div class="admin-section-header">
+  <h2>Ürün &amp; Stok Yönetimi</h2>
+  <a href="{{ url_for('create_product') }}" class="btn btn-accent btn-sm">+ Yeni Ürün</a>
+</div>
+
+<div class="stat-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 2rem;">
+  <div class="stat-card">
+    <span class="stat-value">{{ products|length }}</span>
+    <span class="stat-label">Listelenen Ürün</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-value">{{ total_stock_value }} ₺</span>
+    <span class="stat-label">Toplam Stok Değeri (Geliş Fiyatı x Adet)</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-value">{{ low_stock_count }}</span>
+    <span class="stat-label">Kritik Stok (5 ve altı)</span>
+  </div>
+</div>
+
+<form method="GET" action="{{ url_for('admin_products') }}" class="product-search">
+  <input type="text" name="q" value="{{ search_query or '' }}" placeholder="Stok kodu veya ürün adıyla ara...">
+  <button type="submit" class="btn btn-outline btn-sm">Ara</button>
+  {% if search_query %}<a href="{{ url_for('admin_products') }}" class="btn btn-outline btn-sm">Temizle</a>{% endif %}
+</form>
+
+<div class="table-wrap">
+  <table class="admin-table excel-table">
+    <tr>
+      <th>Görsel</th>
+      <th>Stok Kodu</th>
+      <th>Ürün Adı</th>
+      <th>Adet</th>
+      <th>Geliş Fiyatı</th>
+      <th>Satış Fiyatı<br><span class="th-sub">(KDV Hariç)</span></th>
+      <th>KDV %</th>
+      <th>Satış Fiyatı<br><span class="th-sub">(KDV Dahil)</span></th>
+      <th>Kâr / Adet</th>
+      <th>İşlemler</th>
+    </tr>
+    {% for p in products %}
+    <tr class="{{ 'low-stock-row' if p.adet <= 5 else '' }}">
+      <td>
+        {% if p.image %}
+          <img src="{{ url_for('static', filename='uploads/' ~ p.image) }}" class="thumb">
+        {% else %}—{% endif %}
+      </td>
+      <td><code>{{ p.stok_kodu }}</code></td>
+      <td>{{ p.ad }}</td>
+      <td class="{{ 'stock-critical' if p.adet <= 5 else '' }}">{{ p.adet }}</td>
+      <td>{{ "%.2f"|format(p.gelis_fiyati) }} ₺</td>
+      <td>{{ "%.2f"|format(p.satis_fiyati) }} ₺</td>
+      <td>%{{ "%.0f"|format(p.kdv_orani) }}</td>
+      <td><strong>{{ "%.2f"|format(p.satis_fiyati * (1 + p.kdv_orani/100)) }} ₺</strong></td>
+      <td>{{ "%.2f"|format(p.satis_fiyati - p.gelis_fiyati) }} ₺</td>
+      <td class="actions">
+        <a class="btn btn-outline btn-sm" href="{{ url_for('edit_product', product_id=p.id) }}">Düzenle</a>
+        <form method="POST" action="{{ url_for('delete_product', product_id=p.id) }}" onsubmit="return confirm('Bu ürünü silmek istediğinize emin misiniz?');" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="10" class="empty-row">
+      {% if search_query %}"{{ search_query }}" ile eşleşen ürün bulunamadı.{% else %}Henüz ürün eklenmedi.{% endif %}
+    </td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<p class="table-note">Satırlar 5 ve altı stoklu ürünlerde sarı, kritik adet sütununda kırmızı renkle vurgulanır. KDV dahil fiyat ve kâr otomatik hesaplanır, elle girilmez.</p>
+
+{% endblock %}

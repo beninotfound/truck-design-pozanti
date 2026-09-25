@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}{{ SITE_NAME }} | Tır ve Kamyon Aksesuarları{% endblock %}
+{% block content %}
+
+<section class="hero-slider" id="heroSlider">
+  {% if slides|length > 0 %}
+    {% for slide in slides %}
+    <div class="hero-slide {{ 'active' if loop.first else '' }}">
+      {% if slide.image %}
+        <img src="{{ url_for('static', filename='uploads/' ~ slide.image) }}" alt="{{ slide.title }}">
+      {% else %}
+        <div class="hero-fallback-bg"></div>
+      {% endif %}
+      <div class="hero-overlay"></div>
+      <div class="hero-content container">
+        <h1>{{ slide.title }}</h1>
+        {% if slide.description %}<p>{{ slide.description }}</p>{% endif %}
+        {% if slide.button_text %}
+          <a href="{{ slide.button_link or url_for('galeri') }}" class="btn btn-accent">{{ slide.button_text }}</a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+    <div class="hero-dots">
+      {% for slide in slides %}
+        <span class="hero-dot {{ 'active' if loop.first else '' }}" data-index="{{ loop.index0 }}"></span>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="hero-slide active">
+      <div class="hero-fallback-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content container">
+        <h1>TRUCK DESIGN POZANTI</h1>
+        <p>Aracınızı tarzınıza göre yeniden tasarlıyoruz.</p>
+        <a href="{{ url_for('galeri') }}" class="btn btn-accent">İşlerimizi Gör</a>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+<section class="section about-short">
+  <div class="container two-col">
+    <div class="two-col-text">
+      <span class="eyebrow">Hakkımızda</span>
+      <h2>Aracınız İçin Profesyonel Dokunuş</h2>
+      <p>Truck Design Pozantı olarak; tır, kamyon ve ticari araçlar için LED aydınlatma, ses sistemleri, krom aksesuarlar ve iç/dış dizayn uygulamalarında uzman bir ekiple hizmet veriyoruz. Her projede kaliteyi ve müşteri memnuniyetini önceliğimiz haline getiriyoruz.</p>
+      <a href="{{ url_for('hakkimizda') }}" class="btn btn-outline">Daha Fazla Bilgi</a>
+    </div>
+    <div class="two-col-media">
+      <div class="media-frame"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section services-section">
+  <div class="container">
+    <div class="section-heading center">
+      <span class="eyebrow">Hizmetlerimiz</span>
+      <h2>Neler Yapıyoruz</h2>
+    </div>
+    <div class="card-grid">
+      <div class="service-card">
+        <div class="service-icon">🚚</div>
+        <h3>Tır & Kamyon Aksesuarları</h3>
+        <p>Ticari araçlar için özel üretim ve uygulama aksesuarları.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💡</div>
+        <h3>LED & Aydınlatma</h3>
+        <p>İç ve dış mekan için modern LED aydınlatma sistemleri.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔊</div>
+        <h3>Ses Sistemleri</h3>
+        <p>Yüksek performanslı ses sistemi kurulum ve uygulamaları.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">✨</div>
+        <h3>Krom Aksesuarlar</h3>
+        <p>Aracınıza şıklık katan krom detay ve kaplamalar.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🛋️</div>
+        <h3>İç Dizayn</h3>
+        <p>Kabin içi konfor ve estetik için özel iç mekan tasarımı.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎨</div>
+        <h3>Dış Dizayn</h3>
+        <p>Araç dış görünümünü güçlendiren profesyonel uygulamalar.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <h3>Elektrik & Elektronik</h3>
+        <p>Araç elektrik/elektronik sistemleri kurulum ve bakımı.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🛠️</div>
+        <h3>Özel Tasarım</h3>
+        <p>Size özel, sıfırdan tasarlanan kişiselleştirme çözümleri.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section featured-section">
+  <div class="container">
+    <div class="section-heading center">
+      <span class="eyebrow">Portfolyo</span>
+      <h2>Öne Çıkan İşlerimiz</h2>
+    </div>
+    {% if posts|length > 0 %}
+    <div class="post-grid">
+      {% for post in posts %}
+      <div class="post-card">
+        {% if post.image %}
+          <img src="{{ url_for('static', filename='uploads/' ~ post.image) }}" alt="{{ post.title }}" loading="lazy">
+        {% else %}
+          <div class="post-card-placeholder"></div>
+        {% endif %}
+        <div class="post-card-body">
+          <span class="post-date">{{ post.created_at[:10] }}</span>
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.content[:110] }}{% if post.content|length > 110 %}...{% endif %}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="center" style="margin-top:2.5rem;">
+      <a href="{{ url_for('galeri') }}" class="btn btn-outline">Tüm İşleri Gör</a>
+    </div>
+    {% else %}
+    <p class="empty-state center">Henüz gönderi eklenmedi.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section cta-section">
+  <div class="container center">
+    <h2>Aracınızı Birlikte Tasarlayalım</h2>
+    <p>Hemen WhatsApp üzerinden bize ulaşın, projenizi konuşalım.</p>
+    <a href="https://wa.me/{{ WHATSAPP_NUMBER }}" target="_blank" rel="noopener" class="btn btn-accent btn-lg">WhatsApp'tan Yazın</a>
+  </div>
+</section>
+
+{% endblock %}

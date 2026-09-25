@@ -1,0 +1,30 @@
+{% extends "admin_base.html" %}
+{% block title %}Slaytı Düzenle{% endblock %}
+{% block admin_content %}
+<h2>Slaytı Düzenle</h2>
+{% if slide.image %}
+  <img src="{{ url_for('static', filename='uploads/' ~ slide.image) }}" class="edit-preview">
+{% endif %}
+<form method="POST" enctype="multipart/form-data" class="admin-form form-card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Başlık</label>
+  <input type="text" name="title" required maxlength="150" value="{{ slide.title }}">
+
+  <label>Açıklama</label>
+  <textarea name="description" rows="3" maxlength="500">{{ slide.description or '' }}</textarea>
+
+  <label>Buton Yazısı</label>
+  <input type="text" name="button_text" maxlength="50" value="{{ slide.button_text or '' }}">
+
+  <label>Buton Linki</label>
+  <input type="text" name="button_link" maxlength="300" value="{{ slide.button_link or '' }}">
+
+  <label>Sıra</label>
+  <input type="number" name="sort_order" value="{{ slide.sort_order }}">
+
+  <label>Yeni Fotoğraf (opsiyonel - boş bırakılırsa mevcut görsel korunur)</label>
+  <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
+
+  <button type="submit" class="btn btn-accent">Güncelle</button>
+</form>
+{% endblock %}

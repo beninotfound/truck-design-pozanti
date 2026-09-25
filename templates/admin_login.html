@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Girişi | {{ SITE_NAME }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-body">
+  <div class="admin-login-wrap">
+    <div class="admin-login-card">
+      <div class="brand" style="justify-content:center;margin-bottom:1.5rem;">
+        <span class="brand-mark">TD</span>
+        <span class="brand-text">TRUCK DESIGN <strong>POZANTI</strong></span>
+      </div>
+      <h2>Yönetici Girişi</h2>
+
+      {% with flashed = get_flashed_messages(with_categories=True) %}
+        {% if flashed %}
+          {% for category, msg in flashed %}
+            <div class="flash flash-{{ 'success' if category == 'success' else 'error' }}">{{ msg }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="{{ url_for('admin_login') }}" class="admin-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label>Kullanıcı Adı</label>
+        <input type="text" name="username" required autocomplete="username">
+        <label>Şifre</label>
+        <input type="password" name="password" required autocomplete="current-password">
+        <button type="submit" class="btn btn-accent" style="width:100%;">Giriş Yap</button>
+      </form>
+      <a href="{{ url_for('index') }}" class="back-link">&larr; Siteye Dön</a>
+    </div>
+  </div>
+</body>
+</html>

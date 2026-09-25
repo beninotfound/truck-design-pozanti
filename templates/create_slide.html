@@ -1,0 +1,27 @@
+{% extends "admin_base.html" %}
+{% block title %}Yeni Slayt{% endblock %}
+{% block admin_content %}
+<h2>Yeni Slayt Oluştur</h2>
+<form method="POST" enctype="multipart/form-data" class="admin-form form-card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Başlık</label>
+  <input type="text" name="title" required maxlength="150">
+
+  <label>Açıklama</label>
+  <textarea name="description" rows="3" maxlength="500"></textarea>
+
+  <label>Buton Yazısı</label>
+  <input type="text" name="button_text" maxlength="50" placeholder="Örn: İşlerimizi Gör">
+
+  <label>Buton Linki</label>
+  <input type="text" name="button_link" maxlength="300" placeholder="Örn: /galeri">
+
+  <label>Sıra</label>
+  <input type="number" name="sort_order" value="0">
+
+  <label>Fotoğraf (JPG, JPEG, PNG, WEBP - maks. 5MB)</label>
+  <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp" required>
+
+  <button type="submit" class="btn btn-accent">Kaydet</button>
+</form>
+{% endblock %}

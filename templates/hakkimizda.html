@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Hakkımızda | {{ SITE_NAME }}{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Hakkımızda</span>
+    <h1>Truck Design Pozantı</h1>
+    <p>Tır ve kamyon aksesuarlarında güvenilir çözüm ortağınız.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container two-col">
+    <div class="two-col-text">
+      <h2>Kim Olduğumuz</h2>
+      <p>Truck Design Pozantı olarak, ticari araç sahiplerine yönelik profesyonel aksesuar ve kişiselleştirme hizmetleri sunuyoruz. Yılların verdiği tecrübe ile her aracı, sahibinin tarzını yansıtan özel bir projeye dönüştürüyoruz.</p>
+      <p>Amacımız yalnızca ürün satmak değil; kaliteli malzeme, doğru mühendislik ve titiz işçilikle kalıcı çözümler üretmek.</p>
+    </div>
+    <div class="two-col-media">
+      <div class="media-frame"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section values-section">
+  <div class="container">
+    <div class="section-heading center">
+      <span class="eyebrow">Değerlerimiz</span>
+      <h2>Neye Önem Veriyoruz</h2>
+    </div>
+    <div class="card-grid">
+      <div class="service-card">
+        <div class="service-icon">🏆</div>
+        <h3>Kalite</h3>
+        <p>Sadece kaliteli malzeme ve güvenilir ekipmanlarla çalışıyoruz.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🤝</div>
+        <h3>Müşteri Memnuniyeti</h3>
+        <p>Her projede müşterimizin beklentilerini aşmayı hedefliyoruz.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <h3>Profesyonel Uygulama</h3>
+        <p>Deneyimli ekibimizle titiz ve profesyonel işçilik sağlıyoruz.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎯</div>
+        <h3>Araç Kişiselleştirme</h3>
+        <p>Her aracı, sahibinin kimliğini yansıtan özel bir esere dönüştürüyoruz.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section cta-section">
+  <div class="container center">
+    <h2>Bizimle Tanışın</h2>
+    <p>Sorularınız için bize ulaşmaktan çekinmeyin.</p>
+    <a href="{{ url_for('iletisim') }}" class="btn btn-accent btn-lg">İletişime Geç</a>
+  </div>
+</section>
+
+{% endblock %}

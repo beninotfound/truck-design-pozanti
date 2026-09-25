@@ -1,0 +1,18 @@
+{% extends "admin_base.html" %}
+{% block title %}Yeni Gönderi{% endblock %}
+{% block admin_content %}
+<h2>Yeni Gönderi Oluştur</h2>
+<form method="POST" enctype="multipart/form-data" class="admin-form form-card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Başlık</label>
+  <input type="text" name="title" required maxlength="200">
+
+  <label>Açıklama</label>
+  <textarea name="content" rows="5" required maxlength="3000"></textarea>
+
+  <label>Fotoğraf (JPG, JPEG, PNG, WEBP - maks. 5MB)</label>
+  <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
+
+  <button type="submit" class="btn btn-accent">Kaydet</button>
+</form>
+{% endblock %}

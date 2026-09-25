@@ -1,0 +1,131 @@
+{% extends "admin_base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block admin_content %}
+
+<h2>Genel Bakış</h2>
+<div class="stat-grid">
+  <div class="stat-card">
+    <span class="stat-value">{{ stats.total_posts }}</span>
+    <span class="stat-label">Toplam Gönderi</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-value">{{ stats.total_slides }}</span>
+    <span class="stat-label">Toplam Slider</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-value">{{ stats.total_messages }}</span>
+    <span class="stat-label">Toplam Mesaj{% if stats.unread_messages %} ({{ stats.unread_messages }} okunmadı){% endif %}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-value">{{ stats.total_products }}</span>
+    <span class="stat-label">Toplam Ürün{% if stats.low_stock_products %} ({{ stats.low_stock_products }} kritik stok){% endif %}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-value">{{ stats.total_visits }}</span>
+    <span class="stat-label">Toplam Ziyaretçi</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-value">{{ stats.today_visits }}</span>
+    <span class="stat-label">Bugünkü Ziyaretçi</span>
+  </div>
+</div>
+
+<!-- GÖNDERİLER -->
+<div class="admin-section-header">
+  <h2>Gönderiler</h2>
+  <a href="{{ url_for('create_post') }}" class="btn btn-accent btn-sm">+ Yeni Gönderi</a>
+</div>
+<div class="table-wrap">
+  <table class="admin-table">
+    <tr><th>ID</th><th>Görsel</th><th>Başlık</th><th>Tarih</th><th>İşlemler</th></tr>
+    {% for post in posts %}
+    <tr>
+      <td>{{ post.id }}</td>
+      <td>
+        {% if post.image %}
+          <img src="{{ url_for('static', filename='uploads/' ~ post.image) }}" class="thumb">
+        {% else %}—{% endif %}
+      </td>
+      <td>{{ post.title }}</td>
+      <td>{{ post.created_at[:10] }}</td>
+      <td class="actions">
+        <a class="btn btn-outline btn-sm" href="{{ url_for('edit_post', post_id=post.id) }}">Düzenle</a>
+        <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}" onsubmit="return confirm('Bu gönderiyi silmek istediğinize emin misiniz?');" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="empty-row">Henüz gönderi yok.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<!-- SLAYTLAR -->
+<div class="admin-section-header">
+  <h2>Slider</h2>
+  <a href="{{ url_for('create_slide') }}" class="btn btn-accent btn-sm">+ Yeni Slayt</a>
+</div>
+<div class="table-wrap">
+  <table class="admin-table">
+    <tr><th>ID</th><th>Görsel</th><th>Başlık</th><th>Sıra</th><th>İşlemler</th></tr>
+    {% for slide in slides %}
+    <tr>
+      <td>{{ slide.id }}</td>
+      <td>
+        {% if slide.image %}
+          <img src="{{ url_for('static', filename='uploads/' ~ slide.image) }}" class="thumb">
+        {% else %}—{% endif %}
+      </td>
+      <td>{{ slide.title }}</td>
+      <td>{{ slide.sort_order }}</td>
+      <td class="actions">
+        <a class="btn btn-outline btn-sm" href="{{ url_for('edit_slide', slide_id=slide.id) }}">Düzenle</a>
+        <form method="POST" action="{{ url_for('delete_slide', slide_id=slide.id) }}" onsubmit="return confirm('Bu slaytı silmek istediğinize emin misiniz?');" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="empty-row">Henüz slayt yok.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<!-- MESAJLAR -->
+<div class="admin-section-header">
+  <h2>Mesajlar</h2>
+</div>
+<div class="table-wrap">
+  <table class="admin-table">
+    <tr><th>Durum</th><th>Ad</th><th>Telefon</th><th>E-posta</th><th>Mesaj</th><th>Tarih</th><th>İşlemler</th></tr>
+    {% for msg in messages %}
+    <tr class="{{ '' if msg.is_read else 'unread-row' }}">
+      <td>{{ '✅' if msg.is_read else '🟡 Yeni' }}</td>
+      <td>{{ msg.name }}</td>
+      <td>{{ msg.phone or '—' }}</td>
+      <td>{{ msg.email }}</td>
+      <td class="msg-cell">{{ msg.message }}</td>
+      <td>{{ msg.created_at[:16] }}</td>
+      <td class="actions">
+        {% if not msg.is_read %}
+        <form method="POST" action="{{ url_for('mark_message_read', message_id=msg.id) }}" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-outline btn-sm">Okundu</button>
+        </form>
+        {% endif %}
+        <form method="POST" action="{{ url_for('delete_message', message_id=msg.id) }}" onsubmit="return confirm('Bu mesajı silmek istediğinize emin misiniz?');" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="empty-row">Henüz mesaj yok.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% endblock %}
