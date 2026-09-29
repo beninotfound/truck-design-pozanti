@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} | {{ SITE_NAME }}{% endblock %}
+{% block description %}{{ post.content[:150] }}{% endblock %}
+{% block content %}
+
+<section class="page-hero project-hero">
+  <div class="container">
+    {% if post.category %}<span class="eyebrow">{{ post.category }}</span>{% endif %}
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.created_at[:10] }}</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 2.5rem;">
+  <div class="container">
+
+    <a href="{{ url_for('galeri') }}" class="back-to-gallery">&larr; Tüm İşlere Dön</a>
+
+    {% if post.before_image and post.image %}
+    <div class="before-after-grid">
+      <div class="ba-col">
+        <span class="ba-label">Öncesi</span>
+        <img src="{{ url_for('static', filename='uploads/' ~ post.before_image) }}" alt="Öncesi">
+      </div>
+      <div class="ba-col">
+        <span class="ba-label">Sonrası</span>
+        <img src="{{ url_for('static', filename='uploads/' ~ post.image) }}" alt="Sonrası">
+      </div>
+    </div>
+    {% elif post.image %}
+    <img src="{{ url_for('static', filename='uploads/' ~ post.image) }}" alt="{{ post.title }}" class="project-cover">
+    {% endif %}
+
+    {% if gallery_images|length > 1 %}
+    <div class="project-thumb-row">
+      {% for img in gallery_images %}
+        <img src="{{ url_for('static', filename='uploads/' ~ img) }}" alt="{{ post.title }}" loading="lazy">
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="project-body">
+      <h2>Proje Hakkında</h2>
+      <p>{{ post.content }}</p>
+
+      {% if tag_list|length > 0 %}
+      <h3>Yapılan İşlemler</h3>
+      <div class="tag-chips">
+        {% for tag in tag_list %}
+          <span class="tag-chip">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    {% if related|length > 0 %}
+    <div class="section-heading" style="margin-top:3.5rem;">
+      <h2>Benzer İşlerimiz</h2>
+    </div>
+    <div class="post-grid">
+      {% for r in related %}
+      <a href="{{ url_for('post_detail', post_id=r.id) }}" class="post-card">
+        {% if r.image %}
+          <img src="{{ url_for('static', filename='uploads/' ~ r.image) }}" alt="{{ r.title }}" loading="lazy">
+        {% else %}
+          <div class="post-card-placeholder"></div>
+        {% endif %}
+        <div class="post-card-body">
+          <h3>{{ r.title }}</h3>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<section class="section cta-section">
+  <div class="container center">
+    <h2>Bu Tarz Bir Çalışma mı İstiyorsunuz?</h2>
+    <p>Aracınızın fotoğrafını gönderin, birlikte konuşalım.</p>
+    <a href="https://wa.me/{{ WHATSAPP_NUMBER }}?text={{ ('Merhaba, ' ~ post.title ~ ' tarzında bir uygulama hakkında bilgi almak istiyorum.') | urlencode }}" target="_blank" rel="noopener" class="btn btn-accent btn-lg">WhatsApp'tan Proje Gönder</a>
+  </div>
+</section>
+
+{% endblock %}

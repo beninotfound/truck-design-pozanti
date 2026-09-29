@@ -1,0 +1,41 @@
+{% extends "admin_base.html" %}
+{% block title %}Yeni Gönderi{% endblock %}
+{% block admin_content %}
+<h2>Yeni Gönderi (Proje) Oluştur</h2>
+<form method="POST" enctype="multipart/form-data" class="admin-form form-card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Başlık</label>
+  <input type="text" name="title" required maxlength="200" placeholder="Örn: Volvo FH Komple Aksesuar Uygulaması">
+
+  <label>Açıklama</label>
+  <textarea name="content" rows="5" required maxlength="3000" placeholder="Yapılan işin kısa hikayesi..."></textarea>
+
+  <label>Kategori</label>
+  <select name="category">
+    <option value="">— Kategori Seçin —</option>
+    {% for cat in PROJECT_CATEGORIES %}
+      <option value="{{ cat }}">{{ cat }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Yapılan İşlemler (virgülle ayırın)</label>
+  <input type="text" name="tags" maxlength="500" placeholder="Örn: LED, Krom Aksesuar, İç Kabin, Ses Sistemi">
+
+  <label>Kapak / Sonrası Fotoğrafı</label>
+  <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
+
+  <label>Öncesi Fotoğrafı (opsiyonel)</label>
+  <input type="file" name="before_image" accept=".jpg,.jpeg,.png,.webp">
+
+  <label>Ek Fotoğraf 1 (opsiyonel)</label>
+  <input type="file" name="image2" accept=".jpg,.jpeg,.png,.webp">
+
+  <label>Ek Fotoğraf 2 (opsiyonel)</label>
+  <input type="file" name="image3" accept=".jpg,.jpeg,.png,.webp">
+
+  <label>Ek Fotoğraf 3 (opsiyonel)</label>
+  <input type="file" name="image4" accept=".jpg,.jpeg,.png,.webp">
+
+  <button type="submit" class="btn btn-accent">Kaydet</button>
+</form>
+{% endblock %}

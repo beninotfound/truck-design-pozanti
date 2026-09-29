@@ -1,0 +1,57 @@
+{% extends "admin_base.html" %}
+{% block title %}Müşteri Yorumları{% endblock %}
+{% block admin_content %}
+
+<div class="admin-section-header">
+  <h2>Müşteri Yorumları</h2>
+</div>
+
+<p class="table-note">Buraya sadece gerçek müşterilerinizden aldığınız yorumları (Google, WhatsApp, sözlü vb.) girin. Bu yorumlar ana sayfada "Müşterilerimiz Ne Diyor?" bölümünde gösterilir.</p>
+
+<form method="POST" action="{{ url_for('create_testimonial') }}" class="admin-form form-card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <label>Müşteri Adı</label>
+  <input type="text" name="customer_name" required maxlength="100" placeholder="Örn: Ahmet Y.">
+
+  <label>Puan (1-5)</label>
+  <select name="rating">
+    <option value="5" selected>5 - Mükemmel</option>
+    <option value="4">4 - Çok İyi</option>
+    <option value="3">3 - İyi</option>
+    <option value="2">2 - Orta</option>
+    <option value="1">1 - Zayıf</option>
+  </select>
+
+  <label>Yorum</label>
+  <textarea name="comment" rows="4" required maxlength="1000" placeholder="Müşterinin gerçek yorumunu buraya yazın..."></textarea>
+
+  <button type="submit" class="btn btn-accent">Yorumu Ekle</button>
+</form>
+
+<div class="admin-section-header">
+  <h2>Eklenen Yorumlar ({{ testimonials|length }})</h2>
+</div>
+<div class="table-wrap">
+  <table class="admin-table">
+    <tr><th>Müşteri</th><th>Puan</th><th>Yorum</th><th>Tarih</th><th>İşlemler</th></tr>
+    {% for t in testimonials %}
+    <tr>
+      <td>{{ t.customer_name }}</td>
+      <td>{{ '⭐' * t.rating }}</td>
+      <td class="msg-cell">{{ t.comment }}</td>
+      <td>{{ t.created_at[:10] }}</td>
+      <td class="actions">
+        <form method="POST" action="{{ url_for('delete_testimonial', testimonial_id=t.id) }}" onsubmit="return confirm('Bu yorumu silmek istediğinize emin misiniz?');" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="empty-row">Henüz yorum eklenmedi. Ana sayfada bu bölüm en az bir yorum eklenene kadar gizli kalır.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% endblock %}

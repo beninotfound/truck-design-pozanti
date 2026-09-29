@@ -1,0 +1,50 @@
+{% extends "admin_base.html" %}
+{% block title %}Gönderiyi Düzenle{% endblock %}
+{% block admin_content %}
+<h2>Gönderiyi (Projeyi) Düzenle</h2>
+
+<div class="edit-preview-grid">
+  {% if post.image %}<img src="{{ url_for('static', filename='uploads/' ~ post.image) }}" class="edit-preview" alt="Kapak"><span class="preview-label">Kapak/Sonrası</span>{% endif %}
+  {% if post.before_image %}<img src="{{ url_for('static', filename='uploads/' ~ post.before_image) }}" class="edit-preview" alt="Öncesi"><span class="preview-label">Öncesi</span>{% endif %}
+  {% if post.image2 %}<img src="{{ url_for('static', filename='uploads/' ~ post.image2) }}" class="edit-preview" alt="Ek 1">{% endif %}
+  {% if post.image3 %}<img src="{{ url_for('static', filename='uploads/' ~ post.image3) }}" class="edit-preview" alt="Ek 2">{% endif %}
+  {% if post.image4 %}<img src="{{ url_for('static', filename='uploads/' ~ post.image4) }}" class="edit-preview" alt="Ek 3">{% endif %}
+</div>
+
+<form method="POST" enctype="multipart/form-data" class="admin-form form-card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Başlık</label>
+  <input type="text" name="title" required maxlength="200" value="{{ post.title }}">
+
+  <label>Açıklama</label>
+  <textarea name="content" rows="5" required maxlength="3000">{{ post.content }}</textarea>
+
+  <label>Kategori</label>
+  <select name="category">
+    <option value="">— Kategori Seçin —</option>
+    {% for cat in PROJECT_CATEGORIES %}
+      <option value="{{ cat }}" {{ 'selected' if post.category == cat else '' }}>{{ cat }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Yapılan İşlemler (virgülle ayırın)</label>
+  <input type="text" name="tags" maxlength="500" value="{{ post.tags or '' }}" placeholder="Örn: LED, Krom Aksesuar, İç Kabin">
+
+  <label>Yeni Kapak / Sonrası Fotoğrafı (opsiyonel)</label>
+  <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
+
+  <label>Yeni Öncesi Fotoğrafı (opsiyonel)</label>
+  <input type="file" name="before_image" accept=".jpg,.jpeg,.png,.webp">
+
+  <label>Yeni Ek Fotoğraf 1 (opsiyonel)</label>
+  <input type="file" name="image2" accept=".jpg,.jpeg,.png,.webp">
+
+  <label>Yeni Ek Fotoğraf 2 (opsiyonel)</label>
+  <input type="file" name="image3" accept=".jpg,.jpeg,.png,.webp">
+
+  <label>Yeni Ek Fotoğraf 3 (opsiyonel)</label>
+  <input type="file" name="image4" accept=".jpg,.jpeg,.png,.webp">
+
+  <button type="submit" class="btn btn-accent">Güncelle</button>
+</form>
+{% endblock %}

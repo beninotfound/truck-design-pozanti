@@ -1,0 +1,332 @@
+{% extends "base.html" %}
+{% block title %}{{ SITE_NAME }} | Kıbrıs'ın Tır Aksesuar Merkezi{% endblock %}
+{% block content %}
+
+<section class="hero-slider" id="heroSlider">
+  {% if slides|length > 0 %}
+    {% for slide in slides %}
+    <div class="hero-slide {{ 'active' if loop.first else '' }}">
+      {% if slide.image %}
+        <img src="{{ url_for('static', filename='uploads/' ~ slide.image) }}" alt="{{ slide.title }}">
+      {% else %}
+        <div class="hero-fallback-bg"></div>
+      {% endif %}
+      <div class="hero-overlay"></div>
+      <div class="hero-content container">
+        <h1>{{ slide.title }}</h1>
+        {% if slide.description %}<p>{{ slide.description }}</p>{% endif %}
+        {% if slide.button_text %}
+          <a href="{{ slide.button_link or url_for('galeri') }}" class="btn btn-accent">{{ slide.button_text }}</a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+    <div class="hero-dots">
+      {% for slide in slides %}
+        <span class="hero-dot {{ 'active' if loop.first else '' }}" data-index="{{ loop.index0 }}"></span>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="hero-slide active">
+      <div class="hero-fallback-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content container">
+        <span class="hero-kicker">KIBRIS'IN TIR AKSESUAR MERKEZİ</span>
+        <h1>TIR • Kamyon • JCB • Traktör • Binek Araç</h1>
+        <p>Aracınızı getirin, nasıl bir şey istediğinizi birlikte tasarlayalım.</p>
+        <a href="{{ url_for('galeri') }}" class="btn btn-accent">İşlerimizi Gör</a>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+<!-- SON ÇALIŞMALARIMIZ -->
+<section class="section featured-section">
+  <div class="container">
+    <div class="section-heading center">
+      <span class="eyebrow">Portfolyo</span>
+      <h2>Son Çalışmalarımız</h2>
+    </div>
+    {% if posts|length > 0 %}
+    <div class="post-grid">
+      {% for post in posts %}
+      <a href="{{ url_for('post_detail', post_id=post.id) }}" class="post-card">
+        {% if post.image %}
+          <img src="{{ url_for('static', filename='uploads/' ~ post.image) }}" alt="{{ post.title }}" loading="lazy">
+        {% else %}
+          <div class="post-card-placeholder"></div>
+        {% endif %}
+        <div class="post-card-body">
+          <span class="post-date">{{ post.category or post.created_at[:10] }}</span>
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.content[:110] }}{% if post.content|length > 110 %}...{% endif %}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    <div class="center" style="margin-top:2.5rem;">
+      <a href="{{ url_for('galeri') }}" class="btn btn-outline">Tüm İşleri Gör</a>
+    </div>
+    {% else %}
+    <p class="empty-state center">Henüz gönderi eklenmedi.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- NELER YAPIYORUZ -->
+<section class="section categories-section">
+  <div class="container">
+    <div class="section-heading center">
+      <span class="eyebrow">Uzmanlık Alanlarımız</span>
+      <h2>Neler Yapıyoruz</h2>
+    </div>
+    <div class="category-cards">
+      <a href="{{ url_for('galeri', category='TIR') }}" class="category-card">
+        <span class="category-icon">🚛</span>
+        <h3>TIR &amp; Kamyon</h3>
+      </a>
+      <a href="{{ url_for('galeri', category='JCB') }}" class="category-card">
+        <span class="category-icon">🏗️</span>
+        <h3>JCB &amp; İş Makineleri</h3>
+      </a>
+      <a href="{{ url_for('galeri', category='Traktör') }}" class="category-card">
+        <span class="category-icon">🚜</span>
+        <h3>Traktör</h3>
+      </a>
+      <a href="{{ url_for('galeri', category='Binek Araç') }}" class="category-card">
+        <span class="category-icon">🚗</span>
+        <h3>Binek Araç</h3>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- HAKKIMIZDA KISA -->
+<section class="section about-short">
+  <div class="container two-col">
+    <div class="two-col-text">
+      <span class="eyebrow">Hakkımızda</span>
+      <h2>TIR'dan JCB'ye, Işıklandırmadan Ses Sistemine</h2>
+      <p>Truck Design Pozantı olarak işinizi düzgün yapıyoruz. Aracınızı getirin, ne istediğinizi birlikte konuşalım — LED aydınlatmadan krom aksesuara, ses sisteminden tavan klimasına kadar elimiz her işe değiyor.</p>
+      <a href="{{ url_for('hakkimizda') }}" class="btn btn-outline">Daha Fazla Bilgi</a>
+    </div>
+    <div class="two-col-media">
+      <div class="media-frame"></div>
+    </div>
+  </div>
+</section>
+
+<!-- HİZMETLER -->
+<section class="section services-section">
+  <div class="container">
+    <div class="section-heading center">
+      <span class="eyebrow">Hizmetlerimiz</span>
+      <h2>Neler Sunuyoruz</h2>
+    </div>
+    <div class="card-grid">
+      <div class="service-card">
+        <div class="service-icon">🚚</div>
+        <h3>Tır & Kamyon Aksesuarları</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💡</div>
+        <h3>LED & Aydınlatma</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔊</div>
+        <h3>Ses Sistemleri</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">✨</div>
+        <h3>Krom Aksesuarlar</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">❄️</div>
+        <h3>Tavan Klaması</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🛋️</div>
+        <h3>İç Dizayn</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <h3>Elektrik & Elektronik</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🛠️</div>
+        <h3>Özel Tasarım</h3>
+      </div>
+    </div>
+    <div class="center" style="margin-top:2rem;">
+      <a href="{{ url_for('hizmetler') }}" class="btn btn-outline">Tüm Hizmetleri Gör</a>
+    </div>
+  </div>
+</section>
+
+<!-- ÜRÜNLER -->
+{% if public_products|length > 0 %}
+<section class="section products-teaser">
+  <div class="container">
+    <div class="section-heading center">
+      <span class="eyebrow">Mağaza</span>
+      <h2>Ürünlerimiz</h2>
+    </div>
+    <div class="product-grid">
+      {% for p in public_products %}
+      <div class="product-card">
+        {% if p.image %}
+          <img src="{{ url_for('static', filename='uploads/' ~ p.image) }}" alt="{{ p.ad }}" loading="lazy">
+        {% else %}
+          <div class="post-card-placeholder"></div>
+        {% endif %}
+        <div class="product-card-body">
+          {% if p.category %}<span class="post-date">{{ p.category }}</span>{% endif %}
+          <h3>{{ p.ad }}</h3>
+          <a href="https://wa.me/{{ WHATSAPP_NUMBER }}?text={{ ('Merhaba, ' ~ p.ad ~ ' ürünü hakkında fiyat bilgisi almak istiyorum.') | urlencode }}" target="_blank" rel="noopener" class="btn btn-accent btn-sm" style="width:100%;">Fiyat İçin WhatsApp</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="center" style="margin-top:2.5rem;">
+      <a href="{{ url_for('urunler') }}" class="btn btn-outline">Tüm Ürünleri Gör</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- NEDEN TRUCK DESIGN -->
+<section class="section why-section">
+  <div class="container">
+    <div class="section-heading center">
+      <span class="eyebrow">Neden Biz</span>
+      <h2>Neden Truck Design Pozantı?</h2>
+    </div>
+    <div class="card-grid why-grid">
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <h3>Profesyonel Montaj</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <h3>12V / 24V Sistemler</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🚛</div>
+        <h3>TIR & Kamyon Uzmanlığı</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏗️</div>
+        <h3>JCB & İş Makineleri</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔊</div>
+        <h3>Ses Sistemi Uygulamaları</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💡</div>
+        <h3>LED & Aydınlatma</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📍</div>
+        <h3>Ercan Kavşağı'nda Kolay Ulaşım</h3>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📱</div>
+        <h3>WhatsApp'tan Hızlı İletişim</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NASIL ÇALIŞIYORUZ -->
+<section class="section how-section">
+  <div class="container">
+    <div class="section-heading center">
+      <span class="eyebrow">Süreç</span>
+      <h2>Nasıl Çalışıyoruz?</h2>
+    </div>
+    <div class="steps-row">
+      <div class="step-card">
+        <span class="step-num">1</span>
+        <h3>Projenizi Anlatın</h3>
+        <p>Fotoğrafını WhatsApp'tan gönderin, projenizi birlikte konuşalım.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">2</span>
+        <h3>Birlikte Tasarlayalım</h3>
+        <p>İhtiyacınıza göre ürün ve uygulamaları belirleyelim.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">3</span>
+        <h3>Uygulamayı Yapalım</h3>
+        <p>Profesyonel montaj ve işçilik.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">4</span>
+        <h3>Aracınızı Teslim Alın</h3>
+        <p>Yeni görünümüyle yola çıkın.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MÜŞTERİ YORUMLARI -->
+{% if testimonials|length > 0 %}
+<section class="section testimonials-section">
+  <div class="container">
+    <div class="section-heading center">
+      <span class="eyebrow">Referanslar</span>
+      <h2>Müşterilerimiz Ne Diyor?</h2>
+    </div>
+    <div class="testimonial-grid">
+      {% for t in testimonials %}
+      <div class="testimonial-card">
+        <span class="testimonial-stars">{{ '⭐' * t.rating }}</span>
+        <p>"{{ t.comment }}"</p>
+        <span class="testimonial-name">— {{ t.customer_name }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- BİZİ ZİYARET EDİN -->
+<section class="section visit-section">
+  <div class="container">
+    <div class="section-heading center">
+      <span class="eyebrow">Konum</span>
+      <h2>Bizi Yerimizde Görün</h2>
+      <p>Cihangir – Ercan Havalimanı Kavşağı, Kerimoğulları Tır Garajı Yanı</p>
+    </div>
+    <div class="map-frame map-frame-lg">
+      <iframe src="https://www.google.com/maps?q=Kerimo%C4%9Fullar%C4%B1%20T%C4%B1r%20Garaj%C4%B1%2C%20Cihangir%2C%20Ercan%2C%20KKTC&output=embed" width="100%" height="360" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="visit-actions">
+      <a href="tel:+{{ WHATSAPP_NUMBER }}" class="btn btn-outline btn-lg">📞 Ara</a>
+      <a href="https://wa.me/{{ WHATSAPP_NUMBER }}" target="_blank" rel="noopener" class="btn btn-accent btn-lg">💬 WhatsApp</a>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=Kerimo%C4%9Fullar%C4%B1+T%C4%B1r+Garaj%C4%B1%2C+Cihangir%2C+Ercan%2C+KKTC" target="_blank" rel="noopener" class="btn btn-outline btn-lg">📍 Yol Tarifi Al</a>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="section instagram-section">
+  <div class="container center">
+    <span class="eyebrow">Sosyal Medya</span>
+    <h2>Instagram'dan Takip Edin</h2>
+    <p>Son çalışmalarımızı Instagram'da paylaşıyoruz.</p>
+    <a href="#" target="_blank" rel="noopener" class="btn btn-outline btn-lg">@truckdesignpozanti — Instagram'da Gör →</a>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta-section">
+  <div class="container center">
+    <h2>Aracınızı Birlikte Tasarlayalım</h2>
+    <p>Fotoğrafını gönderin, ne istediğinizi birlikte konuşalım.</p>
+    <a href="https://wa.me/{{ WHATSAPP_NUMBER }}" target="_blank" rel="noopener" class="btn btn-accent btn-lg">WhatsApp'tan Yazın</a>
+  </div>
+</section>
+
+{% endblock %}

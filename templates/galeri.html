@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}İşlerimiz | {{ SITE_NAME }}{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Portfolyo</span>
+    <h1>İşlerimiz</h1>
+    <p>Tamamladığımız projelerden bir seçki. Fotoğrafına tıklayın, detaylarını görün.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 2.5rem;">
+  <div class="container">
+
+    <div class="category-filter">
+      <a href="{{ url_for('galeri') }}" class="chip {{ 'active' if not active_category else '' }}">Tümü</a>
+      {% for cat in PROJECT_CATEGORIES %}
+        <a href="{{ url_for('galeri', category=cat) }}" class="chip {{ 'active' if active_category == cat else '' }}">{{ cat }}</a>
+      {% endfor %}
+    </div>
+
+    {% if posts|length > 0 %}
+    <div class="gallery-grid">
+      {% for post in posts %}
+      <a href="{{ url_for('post_detail', post_id=post.id) }}" class="gallery-item">
+        {% if post.image %}
+          <img src="{{ url_for('static', filename='uploads/' ~ post.image) }}" alt="{{ post.title }}" loading="lazy">
+        {% else %}
+          <div class="post-card-placeholder"></div>
+        {% endif %}
+        {% if post.category %}<span class="gallery-badge">{{ post.category }}</span>{% endif %}
+        <div class="gallery-overlay">
+          <h3>{{ post.title }}</h3>
+          <span>Detayları Gör →</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-state center">
+      {% if active_category %}"{{ active_category }}" kategorisinde henüz içerik eklenmedi.{% else %}Henüz galeri içeriği eklenmedi.{% endif %}
+    </p>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

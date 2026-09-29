@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Ürünler | {{ SITE_NAME }}{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Ürünler</span>
+    <h1>Ürün Kataloğumuz</h1>
+    <p>LED, ses sistemi, krom aksesuar ve daha fazlası. Fiyat ve stok bilgisi için WhatsApp'tan yazın.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 2.5rem;">
+  <div class="container">
+
+    <div class="category-filter">
+      <a href="{{ url_for('urunler') }}" class="chip {{ 'active' if not active_category else '' }}">Tümü</a>
+      {% for cat in PRODUCT_CATEGORIES %}
+        <a href="{{ url_for('urunler', category=cat) }}" class="chip {{ 'active' if active_category == cat else '' }}">{{ cat }}</a>
+      {% endfor %}
+    </div>
+
+    {% if products|length > 0 %}
+    <div class="product-grid">
+      {% for p in products %}
+      <div class="product-card">
+        {% if p.image %}
+          <img src="{{ url_for('static', filename='uploads/' ~ p.image) }}" alt="{{ p.ad }}" loading="lazy">
+        {% else %}
+          <div class="post-card-placeholder"></div>
+        {% endif %}
+        <div class="product-card-body">
+          {% if p.category %}<span class="post-date">{{ p.category }}</span>{% endif %}
+          <h3>{{ p.ad }}</h3>
+          <a href="https://wa.me/{{ WHATSAPP_NUMBER }}?text={{ ('Merhaba, ' ~ p.ad ~ ' ürünü hakkında fiyat bilgisi almak istiyorum.') | urlencode }}" target="_blank" rel="noopener" class="btn btn-accent btn-sm" style="width:100%;">Fiyat İçin WhatsApp</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-state center">
+      {% if active_category %}"{{ active_category }}" kategorisinde henüz ürün eklenmedi.{% else %}Henüz ürün eklenmedi.{% endif %}
+    </p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section cta-section">
+  <div class="container center">
+    <h2>Aradığınızı Bulamadınız mı?</h2>
+    <p>Elimizde daha fazla ürün var, ihtiyacınızı yazın size en uygununu önerelim.</p>
+    <a href="https://wa.me/{{ WHATSAPP_NUMBER }}" target="_blank" rel="noopener" class="btn btn-accent btn-lg">WhatsApp'tan Sorun</a>
+  </div>
+</section>
+
+{% endblock %}
